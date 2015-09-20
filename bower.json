@@ -1,15 +1,6 @@
 {
-  "name": "startbootstrap-sb-admin-2",
+  "name": "spring-websocket-poc",
   "version": "1.0.7",
-  "homepage": "http://startbootstrap.com/template-overviews/sb-admin-2/",
-  "authors": [
-    "David Miller"
-  ],
-  "description": "A free, open source, Bootstrap admin theme created by Start Bootstrap",
-  "keywords": [
-    "bootstrap",
-    "theme"
-  ],
   "license": "Apache",
   "ignore": [
     "**/.*",
@@ -20,10 +11,6 @@
     "pages",
     "index.html",
     "/js"
-  ],
-  "main": [
-    "dist/css/sb-admin-2.css",
-    "dist/js/sb-admin-2.js"
   ],
   "dependencies": {
     "bootstrap": "~3.3.1",

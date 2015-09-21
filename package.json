@@ -3,6 +3,7 @@
     "node": "0.12.x"
   },
   "name": "spring-websocket-poc",
+  "author": "luiz tavares",
   "private": false,
   "version": "1.0.0-SNAPSHOT",
   "repository": "https://github.com/luiz-tavares/spring-websocket-poc",
@@ -10,5 +11,12 @@
   "main": "",
   "dependencies": {
     "bower": "^1.4.0"
+  },
+
+  "devDependencies": {
+    "grunt": "~0.4",
+    "less": "~2.5.1"
   }
+
+
 }

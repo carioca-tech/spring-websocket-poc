@@ -6,6 +6,8 @@
         </Console>
     </Appenders>
     <Loggers>
+        <Logger name="org.springframework.messaging" level="trace">
+        </Logger>
         <Root level="info">
             <AppenderRef ref="Console"/>
         </Root>

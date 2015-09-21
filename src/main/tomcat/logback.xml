@@ -7,10 +7,9 @@
     </appender>
 
     <logger name="org.springframework.security" level="INFO"/>
-    <logger name="org.springframework.web.socket" level="DEBUG"/>
-    <logger name="org.springframework.web" level="INFO"/>
-    <logger name="org.thymeleaf" level="DEBUG"/>
-    <logger name="org.thymeleaf.spring4" level="DEBUG"/>
+    <logger name="org.springframework.messaging" level="DEBUG"/>
+    <logger name="org.springframework.web" level="DEBUG"/>
+    <logger name="org.thymeleaf" level="INFO"/>
 
     <root level="info">
         <appender-ref ref="STDOUT" />

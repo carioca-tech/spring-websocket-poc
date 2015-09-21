@@ -9,6 +9,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
+
     <title>SB Admin 2 - Bootstrap Admin Theme</title>
 
     <!-- Bootstrap Core CSS -->
@@ -58,7 +59,7 @@
         </div>
         <!-- /.navbar-header -->
 
-        <ul class="nav navbar-top-links navbar-right">
+        <ul class="nav navbar-top-links navbar-right" th:hidden="true">
             <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-envelope fa-fw"></i> <i class="fa fa-caret-down"></i>
@@ -257,7 +258,7 @@
                 <!-- /.dropdown-alerts -->
             </li>
             <!-- /.dropdown -->
-            <li class="dropdown">
+            <li class="dropdown" th:hidden="true">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
@@ -876,7 +877,8 @@
                     </div>
                     <!-- /.panel-heading -->
                     <div class="panel-body">
-                        <ul class="chat">
+                        <ul class="chat" id="chat">
+                            <!--
                             <li class="left clearfix">
                                     <span class="chat-img pull-left">
                                         <img src="http://placehold.it/50/55C1E7/fff" alt="User Avatar"
@@ -953,15 +955,16 @@
                                     </p>
                                 </div>
                             </li>
+                            -->
                         </ul>
                     </div>
                     <!-- /.panel-body -->
                     <div class="panel-footer">
                         <div class="input-group">
                             <input id="btn-input" type="text" class="form-control input-sm"
-                                   placeholder="Type your message here..."/>
+                                   placeholder="Type your message here..." disabled="disabled"/>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-sm" id="btn-chat">
+                                    <button class="btn btn-warning btn-sm" id="btn-chat" disabled="disabled">
                                         Send
                                     </button>
                                 </span>
@@ -997,21 +1000,59 @@
 <!-- Custom Theme JavaScript -->
 <script  th:src="@{/dist/js/sb-admin-2.js}" src="../dist/js/sb-admin-2.js"></script>
 <script src="//cdn.jsdelivr.net/sockjs/1.0.0/sockjs.min.js"></script>
+<script th:inline="javascript">
+/*<![CDATA[*/
+    var headerName = /*[[${_csrf.headerName}]]*/ null;
+    var csrfToken = /*[[${_csrf.token}]]*/ null;
+
+
+/*]]>*/
+</script>
 <script type="application/javascript">
 
+    var stompHeaders = {}
+    stompHeaders[headerName] = csrfToken;
+
+    function chatMessageReceived(message) {
+        var newMessage =  $('<li></li>').addClass('right').addClass('clearfix').text(message);
+        $("#chat").append(newMessage);
+    }
+
+    var chatSubscription = {};
+    var stompClient = {};
+
+    function stompConnected() {
+        chatSubscription = stompClient.subscribe("/topic/greetings", chatMessageReceived);
+        stompClient.send("/app/chat", {priority: 9}, "Joined");
+        $('#btn-chat').prop('disabled', false);
+        $('#btn-input').prop('disabled', false);
+    }
+
+    function stompErrorCallback(e) {
+    }
+
+    function postMessage() {
+        var theValue = $('#btn-input').val();
+        if (theValue == '') return;
+        stompClient.send("/app/chat", {}, theValue);
+        $('#btn-input').val('');
+    }
+
+
+    $("#btn-chat").on("click",postMessage);
+    $('#btn-input').on("keyup",function(e){
+        if (e.keyCode == 13) postMessage();
+    })
+
     $(document).ready(function() {
-        var sock = new SockJS('/admin/socket');
-        var client = Stomp.over(sock);
-        sock.onopen = function() {
-            client.send("/queue/test", {priority: 9}, "Hello, STOMP");
-            client.send("/app/greeting", {priority: 9}, "Hello, STOMP");
-        };
+        var sock = new SockJS('/admin/chat');
+        stompClient = Stomp.over(sock);
+        stompClient.connect(stompHeaders, stompConnected, stompErrorCallback);
     });
 
 
 
 </script>
-
 </body>
 
 </html>

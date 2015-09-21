@@ -18,7 +18,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/socket").withSockJS();
+        registry.addEndpoint("/chat").withSockJS();
     }
 
 
@@ -32,5 +32,8 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
         super.configureMessageBroker(registry);
         registry.setApplicationDestinationPrefixes("/app");
         registry.enableSimpleBroker("/topic", "/queue");
+        registry.setUserDestinationPrefix("/user");
     }
+
+
 }
